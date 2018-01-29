@@ -163,3 +163,5 @@ while len(applications) > 0:
 
 	else:
 		i = i + 1
+
+print('You have no more applications left to review! Please check back periodically for more applications.')
