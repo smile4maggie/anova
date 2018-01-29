@@ -120,7 +120,7 @@ word_count_fields = set([
 					])
 
 i = 0
-while len(applications) > 0:
+while len(applications) > 0 and len(applications) != len(reviewed_applications):
 	application = applications[i % len(applications)]
 	# Printing application
 	application = application['fields']
