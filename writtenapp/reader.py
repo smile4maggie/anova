@@ -164,4 +164,4 @@ while len(applications) > 0 and len(applications) != len(reviewed_applications):
 	else:
 		i = i + 1
 
-print('You have no more applications left to review! Please check back periodically for more applications.')
+print(color.RED + 'You have no more applications left to review! Please check back periodically for more applications.' + color.END)
