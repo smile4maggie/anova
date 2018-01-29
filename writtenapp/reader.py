@@ -119,7 +119,9 @@ word_count_fields = set([
 						'What does addressing systemic issues and inequality in education look like to you? (max 150 words)'
 					])
 
-for application in applications:
+i = 0
+while len(applications) > 0:
+	application = applications[i % len(applications)]
 	# Printing application
 	application = application['fields']
 
@@ -136,10 +138,8 @@ for application in applications:
 
 # 		# Prompting for decision
 		decision = ''
-		while decision != 'y' and decision != 'n':
-			decision = str(input('You have ' + color.BLUE + str(len(applications) - len(reviewed_applications)) + color.END + ' applications left with ' + color.BLUE + str(TOTAL_YES) + color.END + ' more applicants you can accept. Do you want to give this applicant an interview? (y/n) ')).lower()
-
-		reviewed_applications.add(application['Name'])
+		while decision != 'y' and decision != 'n' and decision != 's':
+			decision = str(input('You have ' + color.BLUE + str(len(applications) - len(reviewed_applications)) + color.END + ' applications left with ' + color.BLUE + str(TOTAL_YES) + color.END + ' more applicants you can accept. Do you want to give this applicant an interview? (y/n/s) ')).lower()
 
 # 		# Saving data to airtable
 		data = dict()
@@ -147,12 +147,19 @@ for application in applications:
 		data['Reviewer Name'] = reviewer_name
 		if decision == 'y':
 			data['Interview'] = 'Yes'
+			decision_at.create('Decisions', data)
+			reviewed_applications.add(application['Name'])
 			TOTAL_YES -= 1
 			if TOTAL_YES <= 0:
 				print("You have run out of Y's! Please manually go into the AirTable to reverse some of your decisions.")
 				quit()
-		else:
+		elif decision == 'n':
 			data['Interview'] = 'No'
-		decision_at.create('Decisions', data)
-
+			reviewed_applications.add(application['Name'])
+			decision_at.create('Decisions', data)
+		elif decision == 's':
+			i = i + 1
 		print('\n\n\n')
+
+	else:
+		i = i + 1
