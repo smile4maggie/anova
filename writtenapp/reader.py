@@ -4,7 +4,7 @@ import airtable
 import collections
 from secrets import *
 
-TOTAL_YES = 40
+TOTAL_YES = 1
 DECISION_TABLE_NAME = 'Decisions'
 APPLICATION_TABLE_NAME = 'All%20Applications'
 
@@ -91,6 +91,11 @@ for decision in decisions:
 		reviewed_applications.add(decision['fields']['Applicant Name'])
 		if decision['fields']['Interview'] == 'Yes':
 			TOTAL_YES -= 1
+			if TOTAL_YES <= 0:
+				print("You have run out of Y's! Please manually go into the AirTable to reverse some of your decisions.")
+				quit()
+
+
 
 applications_list = application_at.get(APPLICATION_TABLE_NAME)
 applications = applications_list['records']
@@ -143,6 +148,9 @@ for application in applications:
 		if decision == 'y':
 			data['Interview'] = 'Yes'
 			TOTAL_YES -= 1
+			if TOTAL_YES <= 0:
+				print("You have run out of Y's! Please manually go into the AirTable to reverse some of your decisions.")
+				quit()
 		else:
 			data['Interview'] = 'No'
 		decision_at.create('Decisions', data)
