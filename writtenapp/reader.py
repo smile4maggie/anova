@@ -120,7 +120,7 @@ word_count_fields = set([
 					])
 
 i = 0
-while len(applications) > 0 and len(applications) != len(reviewed_applications):
+while len(applications) != len(reviewed_applications) + 1:
 	application = applications[i % len(applications)]
 	# Printing application
 	application = application['fields']
@@ -139,7 +139,7 @@ while len(applications) > 0 and len(applications) != len(reviewed_applications):
 # 		# Prompting for decision
 		decision = ''
 		while decision != 'y' and decision != 'n' and decision != 's':
-			decision = str(input('You have ' + color.BLUE + str(len(applications) - len(reviewed_applications)) + color.END + ' applications left with ' + color.BLUE + str(TOTAL_YES) + color.END + ' more applicants you can accept. Do you want to give this applicant an interview? (y/n/s) ')).lower()
+			decision = str(input('You have ' + color.BLUE + str(len(applications) - len(reviewed_applications) - 1) + color.END + ' applications left with ' + color.BLUE + str(TOTAL_YES) + color.END + ' more applicants you can accept. Do you want to give this applicant an interview? (y/n/s) ')).lower()
 
 # 		# Saving data to airtable
 		data = dict()
@@ -155,8 +155,8 @@ while len(applications) > 0 and len(applications) != len(reviewed_applications):
 				quit()
 		elif decision == 'n':
 			data['Interview'] = 'No'
-			reviewed_applications.add(application['Name'])
 			decision_at.create('Decisions', data)
+			reviewed_applications.add(application['Name'])
 		elif decision == 's':
 			i = i + 1
 		print('\n\n\n')
