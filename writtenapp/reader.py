@@ -35,9 +35,10 @@ def reorder_dict(ordered_dict):
 				'Explain why the committee above is your first choice. (max 100 words)', \
 				'Which committee is your second choice?', \
 				'Explain why the committee above is your second choice. (max 100 words)', \
-				'Which of these classes have you completed and passed?', \
+				'Which of these classes have you completed or are currently enrolled in?', \
 				'Which of these languages do you know?', \
-				'Please indicate ALL your availabilities (allocate 45 minutes before and after the time slots for travel).', \
+				'What are your other commitments this semester? (classes, extracurriculars, work, etc.)', \
+				'Please indicate ALL your availabilities (allocate 30 minutes before and after the time slots for travel).', \
 				'Can you attend orientation and retreat on 2/9 - 2/11?', \
 				'Do you have any other comments or questions for us?', \
 				'Time Submitted'
@@ -51,20 +52,22 @@ def reorder_dict(ordered_dict):
 
 # This is to ensure everyone uses the same name to review if they close the app based on the issues we ran into last semester
 reviewer_names = ['Aditya', \
-				'Andrew', \
-				'Christina', \
+				'Ana', \
+				'Aydin', \
+				'Dakota', \
 				'David', \
-				'Emilie', \
+				'Dorothy', \
 				'Franco', \
-				'Gillian', \
 				'Helen', \
-				'Jesse', \
-				'Joseph', \
+				'Jonathan', \
+				'Joy', \
 				'Katie', \
-				'Kevin', \
 				'Maggie', \
-				'William', \
-				'Yitian'
+				'Richard', \
+				'Sai', \
+				'Sunny', \
+				'Thu', \
+				'Will'
 			]
 
 reviewer_name = str(input('What is your name? ')).title()
