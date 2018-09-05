@@ -4,7 +4,7 @@ import airtable
 import collections
 from secrets import *
 
-TOTAL_YES = 40
+TOTAL_YES = 54
 DECISION_TABLE_NAME = 'Decisions'
 APPLICATION_TABLE_NAME = 'All%20Applications'
 
