@@ -90,6 +90,7 @@ while 'offset' in decisions_list.keys():
 
 reviewed_applications = set()
 for decision in decisions:
+	# print(reviewer_name)
 	if decision['fields']['Reviewer Name'] == reviewer_name:
 		reviewed_applications.add(decision['fields']['Applicant Name'])
 		if decision['fields']['Interview'] == 'Yes':
