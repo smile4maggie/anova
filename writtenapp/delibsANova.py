@@ -1,7 +1,9 @@
 import csv
 import operator
-f = open("rankings.txt", "w")
-with open('decision.csv') as csvfile:
+
+# f = open("rankings.txt", "w+")
+
+with open('Decisions-Grid view.csv') as csvfile:
     readCSV = csv.reader(csvfile, delimiter=',')
     ranking = {}
     ratioResults = {}
@@ -29,8 +31,22 @@ with open('decision.csv') as csvfile:
         except ZeroDivisionError:
             ratio = float("-inf")
         ratioResults[k] = ratio
-    sorted_x = sorted(ratioResults.items(), key=operator.itemgetter(1))
+    sorted_x = sorted(ratioResults.items(), key=operator.itemgetter(1), reverse = True)
+
+
+    # print(sorted_x)
+
     # for k, v in ranking.items():
     #     print("Candidate: " + k + " " + "***Yes "+ ": "+ str(v[1]) + "   ***No "+ ": "+ str(v[0]))
-    print(sorted_x)
-    f.write(sorted_x)
+
+    # print(sorted_x)
+
+    with open('rankings.csv', "w+") as csvfile:
+        wr = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
+        for x in sorted_x:
+            wr.writerow(x)
+
+    # f.write(str(sorted_x))
+    # s = '\n'.join([str(x) for x in sorted_x])
+    # print('\n'.join([str(x) for x in sorted_x]))
+    # f.write(s)
