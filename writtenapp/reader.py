@@ -53,21 +53,20 @@ def reorder_dict(ordered_dict):
 # This is to ensure everyone uses the same name to review if they close the app based on the issues we ran into last semester
 reviewer_names = ['Aditya', \
 				'Ana', \
-				'Aydin', \
 				'Dakota', \
 				'David', \
 				'Dorothy', \
-				'Franco', \
-				'Helen', \
 				'Jonathan', \
 				'Joy', \
 				'Katie', \
-				'Maggie', \
-				'Richard', \
 				'Sai', \
 				'Sunny', \
 				'Thu', \
-				'Will'
+				'Albert', \
+				'Anna', \
+				'Julie', \
+				'Gary', \
+				'Steven'
 			]
 
 reviewer_name = str(input('What is your name? ')).title()
