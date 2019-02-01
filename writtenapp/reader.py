@@ -59,7 +59,7 @@ reviewer_names = ['Aditya', \
 				'David', \
 				'Dorothy', \
 				'Gary', \
-				'Jonathan', \
+				'Iris', \
 				'Joy', \
 				'Julie', \
 				'Katie', \
