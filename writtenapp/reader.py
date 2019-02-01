@@ -28,7 +28,7 @@ def reorder_dict(ordered_dict):
 				'Email', \
 				'Phone Number', \
 				'Year', \
-				'Why do you want to join ANova? How do you personally resonate with ANova\'s mission statement? (max 300 words)', \
+				'Why do you want to join ANova? How do you personally resonate with ANova\'s mission statement? (max 250 words)', \
 				'Tell us about your most memorable teaching or mentorship experience. (max 150 words)', \
 				'What does addressing systemic issues and inequality in education look like to you? (max 150 words)', \
 				'Which committee is your first choice?', \
