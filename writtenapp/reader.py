@@ -117,7 +117,7 @@ committees = set(['Community', 'Curriculum', 'External Relations', 'GM Advisors'
 word_count_fields = set([
 						'Explain why the committee above is your first choice. (max 100 words)', \
 						'Explain why the committee above is your second choice. (max 100 words)', \
-						'Why do you want to join ANova? How do you personally resonate with ANova\'s mission statement? (max 300 words)', \
+						'Why do you want to join ANova? How do you personally resonate with ANova\'s mission statement? (max 250 words)', \
 						'Tell us about your most memorable teaching or mentorship experience. (max 150 words)', \
 						'What does addressing systemic issues and inequality in education look like to you? (max 150 words)'
 					])
