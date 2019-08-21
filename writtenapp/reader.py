@@ -2,9 +2,11 @@ import csv
 import random
 import airtable
 import collections
+from sys import argv
 from secrets import *
 
-TOTAL_YES = 40
+TOTAL_YES = 20
+TOTAL_REVIEWS_PER_APP = 2
 DECISION_TABLE_NAME = 'Decisions'
 APPLICATION_TABLE_NAME = 'All%20Applications'
 
@@ -24,6 +26,9 @@ class color:
 # The reason we need this is because the shitty airtable API doesn't keep the questions in order...
 def reorder_dict(ordered_dict):
 	new_ordered_dict = collections.OrderedDict()
+
+	# TODO: read app questions from file so we don't have to manually update this script each time
+
 	fields = ['Name', \
 				'Email', \
 				'Phone Number', \
@@ -48,30 +53,26 @@ def reorder_dict(ordered_dict):
 		if field in ordered_dict.keys():
 			new_ordered_dict[field] = ordered_dict[field]
 
-	return new_ordered_dict\
+	return new_ordered_dict
 
-# This is to ensure everyone uses the same name to review if they close the app based on the issues we ran into last semester
-reviewer_names = ['Aditya', \
-				'Albert', \
-				'Ana', \
-				'Anna', \
-				'Dakota', \
-				'David', \
-				'Dorothy', \
-				'Gary', \
-				'Iris', \
-				'Joy', \
-				'Julie', \
-				'Katie', \
-				'Sai', \
-				'Sunny', \
-				'Steven', \
-				'Thu', \
-			]
+reviewer_groups = {'1': ['Aditya', 'Thu', 'Cidney'], 
+'2': ['Ana', 'David', 'Eshani'], 
+'3': ['Joy', 'Caroline', 'Albert'], 
+'4': ['Amanuel', 'Sai', 'Dorothy'], 
+'5': ['Julie', 'Anna', 'Andrew'], 
+'6': ['Maggie', 'Richard']}
 
-reviewer_name = str(input('What is your name? ')).title()
+# Validates user
+group_number = str(input('What is your group number (i.e. 1, 2, 3)? '))
+if group_number not in reviewer_groups:
+	print('Invalid group number. Please provide the group number given to you.')
+	quit()
+print('\n')
+
+reviewer_names = reviewer_groups[group_number]
+reviewer_name = str(input('What is your first name? ')).title()
 if reviewer_name not in reviewer_names:
-	print('The inputted name is not valid. Please provide your full first name. (i.e. Kevin)')
+	print(f'Name not accepted. Please verify your group number and provide your first name. (i.e. Kevin)')
 	quit()
 print('\n')
 
@@ -98,13 +99,21 @@ for decision in decisions:
 				print("You have run out of Y's! Please manually go into the AirTable to reverse some of your decisions.")
 				quit()
 
-
+# print(reviewed_applications)
 
 applications_list = application_at.get(APPLICATION_TABLE_NAME)
 applications = applications_list['records']
+print(len(applications))
+# print(applications_list)
 while 'offset' in applications_list.keys():
 	applications_list = application_at.get(APPLICATION_TABLE_NAME, offset=applications_list['offset'])
 	applications += applications_list['records']
+
+# split apps into review groups
+print(len(reviewer_groups))
+applications = applications[(int(group_number)-1)%(len(reviewer_groups)//TOTAL_REVIEWS_PER_APP)::len(reviewer_groups)//TOTAL_REVIEWS_PER_APP]
+print(applications)
+print(len(applications))
 random.shuffle(applications)
 
 '''AUTO REJECTION LOGIC - SKIP FOR SPRING 2018'''
@@ -123,7 +132,7 @@ word_count_fields = set([
 					])
 
 i = 0
-while len(applications) != len(reviewed_applications) + 1:
+while len(applications) != len(reviewed_applications):
 	application = applications[i % len(applications)]
 	# Printing application
 	application = application['fields']
@@ -142,19 +151,25 @@ while len(applications) != len(reviewed_applications) + 1:
 # 		# Prompting for decision
 		decision = ''
 		while decision != 'y' and decision != 'n' and decision != 's':
-			decision = str(input('You have ' + color.BLUE + str(len(applications) - len(reviewed_applications) - 1) + color.END + ' applications left with ' + color.BLUE + str(TOTAL_YES) + color.END + ' more applicants you can accept. Do you want to give this applicant an interview? (y/n/s) ')).lower()
+			# grammar, ignore
+			_remaining_apps = color.BLUE + str(len(applications) - len(reviewed_applications)) + color.END 
+			_remaining_apps += ' application' if len(applications) - len(reviewed_applications) == 1 else ' applications'
+			_remaining_ys = color.BLUE + str(TOTAL_YES) + color.END
+			_remaining_ys += ' more applicant' if TOTAL_YES == 1 else ' more applicants'
+			decision = str(input('You have ' + _remaining_apps + ' left with ' + _remaining_ys + ' you can accept. Do you want to give this applicant an interview? (y/n/s) ')).lower()
 
 # 		# Saving data to airtable
 		data = dict()
 		data['Applicant Name'] = application['Name']
 		data['Reviewer Name'] = reviewer_name
+		data['Group Number'] = group_number
 		if decision == 'y':
 			data['Interview'] = 'Yes'
 			decision_at.create('Decisions', data)
 			reviewed_applications.add(application['Name'])
 			TOTAL_YES -= 1
 			if TOTAL_YES <= 0:
-				print("You have run out of Y's! Please manually go into the AirTable to reverse some of your decisions.")
+				print("You have run out of Y's! Please go into the AirTable to manually reverse some of your decisions.")
 				quit()
 		elif decision == 'n':
 			data['Interview'] = 'No'
