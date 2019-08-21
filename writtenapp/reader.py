@@ -55,12 +55,14 @@ def reorder_dict(ordered_dict):
 
 	return new_ordered_dict
 
-reviewer_groups = {'1': ['Aditya', 'Thu', 'Cidney'], 
-'2': ['Ana', 'David', 'Eshani'], 
-'3': ['Joy', 'Caroline', 'Albert'], 
-'4': ['Amanuel', 'Sai', 'Dorothy'], 
-'5': ['Julie', 'Anna', 'Andrew'], 
-'6': ['Maggie', 'Richard']}
+reviewer_groups = {
+	'1': ['Aditya', 'Thu', 'Cidney'], 
+	'2': ['Ana', 'David', 'Eshani'], 
+	'3': ['Joy', 'Caroline', 'Albert'], 
+	'4': ['Amanuel', 'Sai', 'Dorothy'], 
+	'5': ['Julie', 'Anna', 'Andrew'], 
+	'6': ['Maggie', 'Richard']
+}
 
 # Validates user
 group_number = str(input('What is your group number (i.e. 1, 2, 3)? '))
@@ -90,7 +92,6 @@ while 'offset' in decisions_list.keys():
 
 reviewed_applications = set()
 for decision in decisions:
-	# print(reviewer_name)
 	if decision['fields'].get('Reviewer Name') == reviewer_name:
 		reviewed_applications.add(decision['fields']['Applicant Name'])
 		if decision['fields']['Interview'] == 'Yes':
@@ -99,22 +100,15 @@ for decision in decisions:
 				print("You have run out of Y's! Please manually go into the AirTable to reverse some of your decisions.")
 				quit()
 
-# print(reviewed_applications)
-
 applications_list = application_at.get(APPLICATION_TABLE_NAME)
 applications = applications_list['records']
-print(len(applications))
-# print(applications_list)
 while 'offset' in applications_list.keys():
 	applications_list = application_at.get(APPLICATION_TABLE_NAME, offset=applications_list['offset'])
 	applications += applications_list['records']
 
 # split apps into review groups
-print(len(reviewer_groups))
 applications = applications[(int(group_number)-1)%(len(reviewer_groups)//TOTAL_REVIEWS_PER_APP)::len(reviewer_groups)//TOTAL_REVIEWS_PER_APP]
-print(applications)
-print(len(applications))
-random.shuffle(applications)
+# random.shuffle(applications) # remove for joint reading groups
 
 '''AUTO REJECTION LOGIC - SKIP FOR SPRING 2018'''
 # # Add auto rejected applicants to reviewed applicants
