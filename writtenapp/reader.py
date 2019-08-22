@@ -59,7 +59,7 @@ reviewer_groups = {
 	'1': ['Aditya', 'Thu', 'Cidney'], 
 	'2': ['Ana', 'David', 'Eshani'], 
 	'3': ['Joy', 'Caroline', 'Albert'], 
-	'4': ['Amanuel', 'Sai', 'Dorothy'], 
+	'4': ['Amanuel', 'Sai', 'Conor'], 
 	'5': ['Julie', 'Anna', 'Andrew'], 
 	'6': ['Maggie', 'Richard']
 }
