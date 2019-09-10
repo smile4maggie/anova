@@ -28,11 +28,10 @@ def reorder_dict(ordered_dict):
 	new_ordered_dict = collections.OrderedDict()
 
 	# TODO: read app questions from file so we don't have to manually update this script each time
+	profile_fields = ['Name', 'Email', 'Phone Number', 'Year']
 
-	fields = ['Name', \
-				'Email', \
-				'Phone Number', \
-				'Year', \
+	# Omit profile fields to reduce bias
+	fields = [
 				'Why do you want to join ANova? How do you personally resonate with ANova\'s mission statement? (max 250 words)', \
 				'Tell us about your most memorable teaching or mentorship experience. (max 150 words)', \
 				'What does addressing systemic issues and inequality in education look like to you? (max 150 words)', \
@@ -40,13 +39,19 @@ def reorder_dict(ordered_dict):
 				'Explain why the committee above is your first choice. (max 100 words)', \
 				'Which committee is your second choice?', \
 				'Explain why the committee above is your second choice. (max 100 words)', \
+				'Which committee is your third choice?', \
+				'Which committee is your fourth choice?', \
+				'Which committee is your fifth choice?', \
+				'Which committee is your sixth choice?', \
+				'Please indicate ALL your site time availabilities from the list below.', \
+				'What are your other commitments this semester? (classes, extracurriculars, work, etc.)', \
 				'Which of these classes have you completed or are currently enrolled in?', \
 				'Which of these languages do you know?', \
-				'What are your other commitments this semester? (classes, extracurriculars, work, etc.)', \
-				'Please indicate ALL your availabilities (allocate 30 minutes before and after the time slots for travel).', \
-				'Can you attend orientation and retreat on 2/9 - 2/11?', \
+				'Can you attend orientation?', \
+				'Can you attend general meetings on Tuesdays 7-8 pm?', \
+				'Can you attend retreat (9/20-9/22)?', \
 				'Do you have any other comments or questions for us?', \
-				'Time Submitted'
+				'Time Submitted', \
 			]
 
 	for field in fields:
@@ -65,14 +70,14 @@ reviewer_groups = {
 }
 
 # Validates user
-group_number = str(input('What is your group number (i.e. 1, 2, 3)? '))
+group_number = str(input('What is your group number (i.e. 1, 2, 3)? ')).strip()
 if group_number not in reviewer_groups:
 	print('Invalid group number. Please provide the group number given to you.')
 	quit()
 print('\n')
 
 reviewer_names = reviewer_groups[group_number]
-reviewer_name = str(input('What is your first name? ')).title()
+reviewer_name = str(input('What is your first name? ')).strip().title()
 if reviewer_name not in reviewer_names:
 	print(f'Name not accepted. Please verify your group number and provide your first name. (i.e. Kevin)')
 	quit()
@@ -116,7 +121,7 @@ applications = applications[(int(group_number)-1)%(len(reviewer_groups)//TOTAL_R
 # 	if 'Status' in application['fields'].keys() and application['fields']['Status'] == 'Auto-Rejection':
 # 		reviewed_applications.add(application['fields']['Name'])
 
-committees = set(['Community', 'Curriculum', 'External Relations', 'GM Advisors', 'Professional Development', 'Publicity', 'Technology', 'Finance'])
+committees = set(['Community', 'Curriculum', 'External Relations', 'DeCal', 'Professional Development', 'Publicity', 'Technology', 'Events', 'Finance', 'Site Leader'])
 word_count_fields = set([
 						'Explain why the committee above is your first choice. (max 100 words)', \
 						'Explain why the committee above is your second choice. (max 100 words)', \
@@ -132,6 +137,7 @@ while len(applications) != len(reviewed_applications):
 	application = application['fields']
 
 	if application['Name'] not in reviewed_applications:
+		full_app = application # needed because reorder dict omits name, email, year, and phone number
 		application = reorder_dict(application)
 		for key, value in application.items():
 			if str(value) in committees:
@@ -154,13 +160,13 @@ while len(applications) != len(reviewed_applications):
 
 # 		# Saving data to airtable
 		data = dict()
-		data['Applicant Name'] = application['Name']
+		data['Applicant Name'] = full_app['Name']
 		data['Reviewer Name'] = reviewer_name
 		data['Group Number'] = group_number
 		if decision == 'y':
 			data['Interview'] = 'Yes'
 			decision_at.create('Decisions', data)
-			reviewed_applications.add(application['Name'])
+			reviewed_applications.add(full_app['Name'])
 			TOTAL_YES -= 1
 			if TOTAL_YES <= 0:
 				print("You have run out of Y's! Please go into the AirTable to manually reverse some of your decisions.")
@@ -168,9 +174,12 @@ while len(applications) != len(reviewed_applications):
 		elif decision == 'n':
 			data['Interview'] = 'No'
 			decision_at.create('Decisions', data)
-			reviewed_applications.add(application['Name'])
+			reviewed_applications.add(full_app['Name'])
 		elif decision == 's':
 			i = i + 1
+		print('\n\n')
+		if "Interview" in data:
+			print(f'You said \'' + data["Interview"] + '\' to ' + full_app['Name'] + ' (Year: ' + full_app['Year']  + ')...')
 		print('\n\n\n')
 
 	else:
