@@ -30,7 +30,7 @@ with open('Decisions-Grid view.csv') as csvfile:
             ratio = yes / total
         except ZeroDivisionError:
             ratio = float("-inf")
-        ratioResults[k] = ratio
+        ratioResults[k] = (ratio, total)
     sorted_x = sorted(ratioResults.items(), key=operator.itemgetter(1), reverse = True)
 
 

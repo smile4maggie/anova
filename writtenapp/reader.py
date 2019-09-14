@@ -112,7 +112,7 @@ while 'offset' in applications_list.keys():
 	applications += applications_list['records']
 
 # split apps into review groups
-applications = applications[(int(group_number)-1)%(len(reviewer_groups)//TOTAL_REVIEWS_PER_APP)::len(reviewer_groups)//TOTAL_REVIEWS_PER_APP]
+applications = applications[(int(group_number)-1)%(len(reviewer_groups))::len(reviewer_groups)//TOTAL_REVIEWS_PER_APP]
 # random.shuffle(applications) # remove for joint reading groups
 
 '''AUTO REJECTION LOGIC - SKIP FOR SPRING 2018'''
@@ -170,6 +170,7 @@ while len(applications) != len(reviewed_applications):
 			TOTAL_YES -= 1
 			if TOTAL_YES <= 0:
 				print("You have run out of Y's! Please go into the AirTable to manually reverse some of your decisions.")
+				# mark remaining apps as N
 				quit()
 		elif decision == 'n':
 			data['Interview'] = 'No'
