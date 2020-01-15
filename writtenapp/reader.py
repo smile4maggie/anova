@@ -64,7 +64,9 @@ def reorder_dict(ordered_dict):
 
 	return new_ordered_dict
 
-reviewer_names = ['Aditya', \
+# Admin used for testing purposes
+reviewer_names = ['Admin', \
+				  'Aditya', \
 				  'Amanuel', \
 				  'Andrew', \
 				  'Christopher', \
