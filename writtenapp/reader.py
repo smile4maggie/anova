@@ -29,18 +29,7 @@ def reorder_dict(ordered_dict):
 	new_ordered_dict = collections.OrderedDict()
 
 	# TODO: read app questions from file so we don't have to manually update this script each time
-	profile_fields = [
-						'Name', 'Email', 'Phone Number', 'Year', 
-						'Which committee is your first choice?', \
-						'Explain why the committee above is your first choice. (100 words max)', \
-						'Which committee is your second choice?', \
-						'Explain why the committee above is your second choice. (100 words max)', \
-						'Which committee is your third choice?', \
-						'Which committee is your fourth choice?', \
-						'Which committee is your fifth choice?', \
-						'Which committee is your sixth choice?', \
-						'Which committee is your seventh choice?', \
-					]
+	profile_fields = ['Name', 'Email', 'Phone Number', 'Year']
 
 	# Omit profile fields to reduce bias
 	fields = [
@@ -48,13 +37,13 @@ def reorder_dict(ordered_dict):
 				'Tell us about your most memorable teaching or mentorship experience. (150 words max)', \
 				'What does addressing systemic issues and inequality in education look like to you? (150 words max)', \
 				'What are your other commitments this semester (classes, extracurriculars, work, etc.)? Do you plan to join any other clubs or organizations?', \
+				'Do you have any questions or comments for us?', \
 				'Please indicate ALL your site teaching availabilities.', \
 				'Which of these classes have you completed or are currently enrolled in?', \
 				'Which of these programming languages do you know?', \
 				'Can you attend Orientation on Friday 2/7 from 6 PM - 8 PM? (mandatory for new members)', \
 				'Can you attend Retreat from 2/7 - 2/9? (mandatory for new members)', \
 				'Can you attend General Meetings on Thursdays from 7 PM - 8 PM?', \
-				'Do you have any questions or comments for us?', \
 				'Time Submitted', \
 			]
 
