@@ -204,7 +204,7 @@ while len(applications) != len(reviewed_applications):
 		print('\n\n')
 		if "Interview" in data:
 			print(f'You said \'' + data["Interview"] + '\' to ' + full_app['Name'] + ' (Year: ' + full_app['Year']  + ')...')
-		print('\n\n\n')
+		print('\n\n\n' + '-' * 20 + '\n\n\n')
 
 	else:
 		i = i + 1
