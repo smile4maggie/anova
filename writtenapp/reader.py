@@ -5,8 +5,9 @@ import collections
 from sys import argv
 from secrets import *
 
-TOTAL_YES = 20
-TOTAL_REVIEWS_PER_APP = 2
+TOTAL_YES = 50
+# Uncomment below if using reading groups
+# TOTAL_REVIEWS_PER_APP = 2
 DECISION_TABLE_NAME = 'Decisions'
 APPLICATION_TABLE_NAME = 'All%20Applications'
 
@@ -28,28 +29,31 @@ def reorder_dict(ordered_dict):
 	new_ordered_dict = collections.OrderedDict()
 
 	# TODO: read app questions from file so we don't have to manually update this script each time
-	profile_fields = ['Name', 'Email', 'Phone Number', 'Year']
+	profile_fields = [
+						'Name', 'Email', 'Phone Number', 'Year', 
+						'Which committee is your first choice?', \
+						'Explain why the committee above is your first choice. (100 words max)', \
+						'Which committee is your second choice?', \
+						'Explain why the committee above is your second choice. (100 words max)', \
+						'Which committee is your third choice?', \
+						'Which committee is your fourth choice?', \
+						'Which committee is your fifth choice?', \
+						'Which committee is your sixth choice?', \
+						'Which committee is your seventh choice?', \
+					]
 
 	# Omit profile fields to reduce bias
 	fields = [
-				'Why do you want to join ANova? How do you personally resonate with ANova\'s mission statement? (max 250 words)', \
-				'Tell us about your most memorable teaching or mentorship experience. (max 150 words)', \
-				'What does addressing systemic issues and inequality in education look like to you? (max 150 words)', \
-				'Which committee is your first choice?', \
-				'Explain why the committee above is your first choice. (max 100 words)', \
-				'Which committee is your second choice?', \
-				'Explain why the committee above is your second choice. (max 100 words)', \
-				'Which committee is your third choice?', \
-				'Which committee is your fourth choice?', \
-				'Which committee is your fifth choice?', \
-				'Which committee is your sixth choice?', \
-				'Please indicate ALL your site time availabilities from the list below.', \
-				'What are your other commitments this semester? (classes, extracurriculars, work, etc.)', \
+				'Why do you want to join ANova? How do you personally resonate with ANova\'s mission statement? (250 words max)', \
+				'Tell us about your most memorable teaching or mentorship experience. (150 words max)', \
+				'What does addressing systemic issues and inequality in education look like to you? (150 words max)', \
+				'What are your other commitments this semester (classes, extracurriculars, work, etc.)? Do you plan to join any other clubs or organizations?', \
+				'Please indicate ALL your site teaching availabilities.', \
 				'Which of these classes have you completed or are currently enrolled in?', \
-				'Which of these languages do you know?', \
-				'Can you attend orientation?', \
-				'Can you attend general meetings on Tuesdays 7-8 pm?', \
-				'Can you attend retreat (9/20-9/22)?', \
+				'Which of these programming languages do you know?', \
+				'Can you attend Orientation on Friday 2/7 from 6 PM - 8 PM? (mandatory for new members)?', \
+				'Can you attend Retreat from 2/7 - 2/9? (mandatory for new members)', \
+				'Can you attend General Meetings on Thursdays from 7 PM - 8 PM?', \
 				'Do you have any other comments or questions for us?', \
 				'Time Submitted', \
 			]
@@ -60,26 +64,44 @@ def reorder_dict(ordered_dict):
 
 	return new_ordered_dict
 
-reviewer_groups = {
-	'1': ['Aditya', 'Thu', 'Cidney'], 
-	'2': ['Ana', 'David', 'Eshani'], 
-	'3': ['Joy', 'Caroline', 'Albert'], 
-	'4': ['Amanuel', 'Sai', 'Conor'], 
-	'5': ['Julie', 'Anna', 'Andrew'], 
-	'6': ['Maggie', 'Richard']
-}
+reviewer_names = ['Aditya', \
+				  'Amanuel', \
+				  'Andrew', \
+				  'Christopher', \
+				  'Conor', \
+				  'Emily', \
+				  'Eshani', \
+				  'Hau', \
+				  'Jessica', \
+				  'Johnathan', \
+				  'Joy', \
+				  'Kevin', \
+				  'Maggie', \
+				  'Pratibha', \
+				  'Priyanka', \
+				  'Sai', \
+				  'Shauna'
+				 ]
 
-# Validates user
-group_number = str(input('What is your group number (i.e. 1, 2, 3)? ')).strip()
-if group_number not in reviewer_groups:
-	print('Invalid group number. Please provide the group number given to you.')
-	quit()
-print('\n')
+# APPLICATION REVIEW GROUPS - FALL 2019 (REMOVED SPRING 2020)
+# reviewer_groups = {
+# 	'1': [], \
+# 	'2': [], \
+# 	'3': [], \
+# 	'4': [], \
+# 	'5': [],
+# }
+# group_number = str(input('What is your group number (i.e. 1, 2, 3)? ')).strip()
+# if group_number not in reviewer_groups:
+# 	print('Invalid group number. Please provide the group number given to you.')
+# 	quit()
+# print('\n')
+# reviewer_names = reviewer_groups[group_number]
 
-reviewer_names = reviewer_groups[group_number]
+# Validates user for reading all applications
 reviewer_name = str(input('What is your first name? ')).strip().title()
 if reviewer_name not in reviewer_names:
-	print(f'Name not accepted. Please verify your group number and provide your first name. (i.e. Kevin)')
+	print(f'Name not accepted. Please provide your full first name. (i.e. Kevin)')
 	quit()
 print('\n')
 
@@ -111,9 +133,10 @@ while 'offset' in applications_list.keys():
 	applications_list = application_at.get(APPLICATION_TABLE_NAME, offset=applications_list['offset'])
 	applications += applications_list['records']
 
-# split apps into review groups
-applications = applications[(int(group_number)-1)%(len(reviewer_groups))::len(reviewer_groups)//TOTAL_REVIEWS_PER_APP]
-# random.shuffle(applications) # remove for joint reading groups
+# APPLICATION REVIEW GROUPS - FALL 2019 (REMOVED SPRING 2020)
+# Split apps into review groups
+# applications = applications[(int(group_number)-1)%(len(reviewer_groups))::len(reviewer_groups)//TOTAL_REVIEWS_PER_APP]
+random.shuffle(applications) # remove for joint reading groups
 
 '''AUTO REJECTION LOGIC - SKIP FOR SPRING 2018'''
 # # Add auto rejected applicants to reviewed applicants
@@ -121,13 +144,13 @@ applications = applications[(int(group_number)-1)%(len(reviewer_groups))::len(re
 # 	if 'Status' in application['fields'].keys() and application['fields']['Status'] == 'Auto-Rejection':
 # 		reviewed_applications.add(application['fields']['Name'])
 
-committees = set(['Community', 'Curriculum', 'External Relations', 'DeCal', 'Professional Development', 'Publicity', 'Technology', 'Events', 'Finance', 'Site Leader'])
+committees = set(['Community', 'Curriculum', 'External Relations', 'DeCal', 'Professional Development', 'Publicity', 'Technology', 'Site Leader'])
 word_count_fields = set([
-						'Explain why the committee above is your first choice. (max 100 words)', \
-						'Explain why the committee above is your second choice. (max 100 words)', \
-						'Why do you want to join ANova? How do you personally resonate with ANova\'s mission statement? (max 250 words)', \
-						'Tell us about your most memorable teaching or mentorship experience. (max 150 words)', \
-						'What does addressing systemic issues and inequality in education look like to you? (max 150 words)'
+						'Explain why the committee above is your first choice. (100 words max)', \
+						'Explain why the committee above is your second choice. (100 words max)', \
+						'Why do you want to join ANova? How do you personally resonate with ANova\'s mission statement? (250 words max)', \
+						'Tell us about your most memorable teaching or mentorship experience. (150 words max)', \
+						'What does addressing systemic issues and inequality in education look like to you? (150 words max)'
 					])
 
 i = 0
@@ -137,7 +160,7 @@ while len(applications) != len(reviewed_applications):
 	application = application['fields']
 
 	if application['Name'] not in reviewed_applications:
-		full_app = application # needed because reorder dict omits name, email, year, and phone number
+		full_app = application # needed because reorder dict omits name, email, year, phone number, and committee preferences
 		application = reorder_dict(application)
 		for key, value in application.items():
 			if str(value) in committees:
@@ -162,7 +185,7 @@ while len(applications) != len(reviewed_applications):
 		data = dict()
 		data['Applicant Name'] = full_app['Name']
 		data['Reviewer Name'] = reviewer_name
-		data['Group Number'] = group_number
+		# data['Group Number'] = group_number # REMOVED SPRING 2020
 		if decision == 'y':
 			data['Interview'] = 'Yes'
 			decision_at.create('Decisions', data)
