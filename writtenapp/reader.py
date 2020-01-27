@@ -41,8 +41,8 @@ def reorder_dict(ordered_dict):
 				'Please indicate ALL your site teaching availabilities.', \
 				'Which of these classes have you completed or are currently enrolled in?', \
 				'Which of these programming languages do you know?', \
-				'Can you attend Orientation on Friday 2/7 from 6 PM - 8 PM? (mandatory for new members)', \
-				'Can you attend Retreat from 2/7 - 2/9? (mandatory for new members)', \
+				'Can you attend Orientation on Friday 2/14 from 6 PM - 8 PM? (mandatory for new members)', \
+				'Can you attend Retreat from 2/21 - 2/23? (mandatory for new members)', \
 				'Can you attend General Meetings on Thursdays from 7 PM - 8 PM?', \
 				'Time Submitted', \
 			]
